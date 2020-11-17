@@ -67,14 +67,12 @@ func make_query(ctx context.Context, uri string, user string, passwd string) (bo
   log.Debug_msg("Making API Query: %s ", uri)
 
   // Get HTTP Protocol Client
-  httpClient := http.DefaultClient
-  if strings.HasPrefix(uri, "https")  {
-    transCfg := &http.Transport{
-      TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // ignore expired SSL certificates
-    }
-    httpClient := &http.Client{Transport: transCfg}
-    _ = httpClient
+  http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
+  tr := &http.Transport{
+    TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
   }
+  httpClient := &http.Client{Transport: tr}
   // Build the request Object
   req, err := http.NewRequest(http.MethodGet, uri, nil)
 
