@@ -67,11 +67,14 @@ func make_query(ctx context.Context, uri string, user string, passwd string) (bo
   log.Debug_msg("Making API Query: %s ", uri)
 
   // Get HTTP Protocol Client
-  //httpClient := http.DefaultClient
-  transCfg := &http.Transport{
-    TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // ignore expired SSL certificates
+  httpClient := http.DefaultClient
+  if strings.HasPrefix(uri, "https")  {
+    transCfg := &http.Transport{
+      TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // ignore expired SSL certificates
+    }
+    httpClient := &http.Client{Transport: transCfg}
+    _ = httpClient
   }
-  httpClient := &http.Client{Transport: transCfg}
   // Build the request Object
   req, err := http.NewRequest(http.MethodGet, uri, nil)
 
@@ -347,7 +350,7 @@ func Get_api_cloudera_version(ctx context.Context, config Collector_connection_d
   // Make query
   json_parsed, err := make_query(
     ctx,
-    fmt.Sprintf("%s://%s:%s/api/version",config.Api_version, config.Host, config.Port),
+    fmt.Sprintf("%s://%s:%s/api/version",config.Api_protocol, config.Host, config.Port),
     config.User,
     config.Passwd,
   )
