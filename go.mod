@@ -1,4 +1,4 @@
-module ecil/cloudera_exporter
+module keedio/cloudera_exporter
 
 go 1.12
 

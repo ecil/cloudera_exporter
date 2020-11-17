@@ -28,9 +28,9 @@ import (
 
 
   // Own libraries
-  cl "ecil/cloudera_exporter/collector"
-  cp "ecil/cloudera_exporter/config_parser"
-  log "ecil/cloudera_exporter/logger"
+  cl "keedio/cloudera_exporter/collector"
+  cp "keedio/cloudera_exporter/config_parser"
+  log "keedio/cloudera_exporter/logger"
 
 
   // Go external libraries
