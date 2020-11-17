@@ -23,11 +23,11 @@ import (
 )
 
 // Base string to the Cloudera URL Query API
-const API_BASE_URL="http://%s:%s/api/%s/%s"
+const API_BASE_URL="%s://%s:%s/api/%s/%s"
 
 // Compose the URL connection to the Cloudera API Query
-func Build_api_query_url(host string, port string, version string, query string) string {
-  return fmt.Sprintf(API_BASE_URL, host, port, version, query)
+func Build_api_query_url(protocol string,host string, port string, version string, query string) string {
+  return fmt.Sprintf(API_BASE_URL,protocol, host, port, version, query)
 }
 
 // Return the Num of items for a API Query

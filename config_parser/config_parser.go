@@ -115,6 +115,15 @@ func parse_api_version (config_reader *ini.File) (string, error) {
   return api_version, nil
 }
 
+func parse_api_protocol (config_reader *ini.File) (string, error) {
+  api_protocol := config_reader.Section("target").Key("protocol").String()
+  if api_protocol == "" {
+    return "", nil
+  }
+  log.Warn_msg("Overwritting API Procol value: %s", api_protocol)
+  return api_protocol, nil
+}
+
 
 
 // Dynamic load of modules
@@ -230,6 +239,13 @@ func Parse_config(config interface{}) (*CE_config, error) {
     return nil, err
   }
 
+  // Cloudera Manager API Protocol
+  api_protocol, err := parse_api_protocol(cfg)
+  if err != nil {
+    log.Err_msg("Can't parse api_protocol field")
+    return nil, err
+  }
+
   global_status_module_flag := parse_global_status_module_flag (cfg)
   host_module_flag := parse_host_module_flag (cfg)
   impala_module_flag := parse_impala_module_flag (cfg)
@@ -268,6 +284,7 @@ func Parse_config(config interface{}) (*CE_config, error) {
       api_version,
       user,
       password,
+      api_protocol,
     },
     CE_collectors_flags{
       map [cl.Scraper] bool {

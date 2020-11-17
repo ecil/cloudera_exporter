@@ -43,6 +43,8 @@ type Collector_connection_data struct {
   Api_version string
   User string
   Passwd string
+  Api_protocol string
+
 }
 
 type Collector struct {
